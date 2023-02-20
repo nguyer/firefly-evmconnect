@@ -1,4 +1,4 @@
-FROM golang:1.18-buster AS builder
+FROM golang:1.19-buster AS builder
 ARG BUILD_VERSION
 ENV BUILD_VERSION=${BUILD_VERSION}
 ADD . /evmconnect
@@ -8,8 +8,8 @@ RUN make
 FROM debian:buster-slim
 WORKDIR /evmconnect
 RUN apt update -y \
- && apt install -y curl jq \
- && rm -rf /var/lib/apt/lists/*
+    && apt install -y curl jq \
+    && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /evmconnect/firefly-evmconnect /usr/bin/evmconnect
 
 ENTRYPOINT [ "/usr/bin/evmconnect" ]
