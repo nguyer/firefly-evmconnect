@@ -94,7 +94,6 @@ func mockStreamLoopEmpty(mRPC *rpcbackendmocks.Backend) {
 	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_uninstallFilter", mock.Anything).Return(nil).Run(func(args mock.Arguments) {
 		*args[1].(*bool) = true
 	}).Maybe()
-	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_getLogs", mock.Anything).Return(nil).Maybe()
 }
 
 func TestEventStreamStartStopOk(t *testing.T) {

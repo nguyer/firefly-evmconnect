@@ -415,7 +415,9 @@ func TestLeadGroupDeliverEvents(t *testing.T) {
 	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_uninstallFilter", mock.Anything).Return(nil).Run(func(args mock.Arguments) {
 		*args[1].(*bool) = true
 	}).Maybe()
-	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_getLogs", mock.Anything).Return(nil).Maybe()
+	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_getLogs", mock.Anything).Return(nil).Run(func(args mock.Arguments) {
+		*args[1].(*[]*logJSONRPC) = make([]*logJSONRPC, 0)
+	}).Maybe()
 
 	_, events, _, done := testEventStreamExistingConnector(t, ctx, done, c, mRPC, l1req)
 	defer done()
@@ -466,7 +468,9 @@ func TestLeadGroupNearBlockZeroEnsureNonNegative(t *testing.T) {
 	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_uninstallFilter", mock.Anything).Return(nil).Run(func(args mock.Arguments) {
 		*args[1].(*bool) = true
 	}).Maybe()
-	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_getLogs", mock.Anything).Return(nil).Maybe()
+	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_getLogs", mock.Anything).Return(nil).Run(func(args mock.Arguments) {
+		*args[1].(*[]*logJSONRPC) = make([]*logJSONRPC, 0)
+	}).Maybe()
 
 	_, _, _, done = testEventStreamExistingConnector(t, ctx, done, c, mRPC, l1req)
 	defer done()
@@ -531,7 +535,9 @@ func TestStreamLoopNewFilterFail(t *testing.T) {
 			close(retried)
 		}).Once()
 	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_newFilter", mock.Anything).Return(&rpcbackend.RPCError{Message: "pop"}).Maybe()
-	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_getLogs", mock.Anything).Return(nil).Maybe()
+	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_getLogs", mock.Anything).Return(nil).Run(func(args mock.Arguments) {
+		*args[1].(*[]*logJSONRPC) = make([]*logJSONRPC, 0)
+	}).Maybe()
 
 	_, _, mRPC, done = testEventStreamExistingConnector(t, ctx, done, c, mRPC, l1req)
 	defer done()
@@ -629,7 +635,9 @@ func TestStreamLoopChangeFilter(t *testing.T) {
 	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_uninstallFilter", mock.Anything).Return(nil).Run(func(args mock.Arguments) {
 		*args[1].(*bool) = true
 	}).Maybe()
-	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_getLogs", mock.Anything).Return(nil).Maybe()
+	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_getLogs", mock.Anything).Return(nil).Run(func(args mock.Arguments) {
+		*args[1].(*[]*logJSONRPC) = make([]*logJSONRPC, 0)
+	}).Maybe()
 
 	es, _, mRPC, done = testEventStreamExistingConnector(t, ctx, done, c, mRPC, l1req)
 	defer done()
@@ -676,7 +684,6 @@ func TestStreamLoopFilterReset(t *testing.T) {
 	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_uninstallFilter", mock.Anything).Return(nil).Run(func(args mock.Arguments) {
 		*args[1].(*bool) = true
 	}).Maybe()
-	mRPC.On("CallRPC", mock.Anything, mock.Anything, "eth_getLogs", mock.Anything).Return(nil).Maybe()
 
 	_, _, mRPC, done = testEventStreamExistingConnector(t, ctx, done, c, mRPC, l1req)
 	defer done()
