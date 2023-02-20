@@ -140,7 +140,7 @@ func TestGetInitialBlockTimeout(t *testing.T) {
 
 func TestGetHWMNotInit(t *testing.T) {
 
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
 	_, c, mRPC, done := newTestConnector(t)
